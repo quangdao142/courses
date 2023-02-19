@@ -1,29 +1,50 @@
-const User = require('../models/User');
-const { mongooseToObject } = require('../../util/mongoose');
-const mongoose = require('../../util/mongoose');
+const User = require("../models/User");
+const { mongooseToObject } = require("../../util/mongoose");
+const userServices = require("../services/userServices");
+const mongoose = require("../../util/mongoose");
+class LoginController {
+	// [GET] /login
+	login(req, res, next) {
+		res.render("login/login");
+	}
+	// [POST] /login
+	async loginAuth(req, res, next) {
+		try {
+			const user = await User.findOne({ email: req.body.email });
+			let isLogged = await userServices.isLogging(req);
 
-class LoginController{
+			if (isLogged === true) {
+				return res.status(401).send({ message: "You are logged in." });
+			}
+			let validator = await userServices.loginValidator(req);
+			if (validator !== null) {
+				return res.status(401).send({ message: validator });
+			}
+			let signIned = await userServices.signIn(req);
+			if (signIned === false) {
+				return res.send({ message: "Email or Password is incorrect" });
+			} else {
+				return res.status(200).redirect("/?email=" + user.email);
+			}
+		} catch (error) {
+			return res.status(500).send({ error: "Server Error" });
+		}
+	}
 
-    // [GET] /login
-    login(req, res, next){
-        
-        res.render('login/login');
-        
-    }
-
-    // [POST] /login
-    async loginAuth(req, res, next){
-        const user = await User.findOne({email: req.body.email});
-        if (!user) 
-            return response.status(422).send('Email or Password is not correct');
-        if(user.password != req.body.password)
-            return response.status(422).send('Email or Password is not correct');
-
-        res.cookie('email',user.email, { maxAge: 900000, httpOnly: true });
-        return res.redirect('/?email='+user.email);
-        
-    }
-
+	// GET [logout]
+	async logoutAuth(req, res, next) {
+		try {
+			if (req.session.user) {
+				req.session.user = null;
+				return res.redirect("/");
+			} else {
+				res.redirect("/login");
+			}
+		} catch (error) {
+			console.log()
+			return res.status(500).send({ error: "Server Error" });
+		}
+	}
 }
 
-module.exports = new LoginController;
+module.exports = new LoginController();

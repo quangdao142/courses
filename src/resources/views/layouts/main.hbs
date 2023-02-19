@@ -10,7 +10,10 @@
 </head>
 <body>
     <div class="app">
-        {{> header}}
+        {{#if session.user}}
+        {{> headerLogined}} {{else}}
+        {{>header}} 
+        {{/if}}
 
         <div class="container">
             {{{body}}}
