@@ -4,7 +4,7 @@ const mongoose = require('../../util/mongoose');
 
 class CourseController{
 
-    // [GET] /courses/:slug
+    // Course Detail [GET] /courses/:slug
     show(req, res, next){
 
         Course.findOne({ slug: req.params.slug })

@@ -1,4 +1,36 @@
 
+<div class="row mt-4 mb-4">
+
+    {{#each courses}}
+        <div class="col-sm-6 mb-4">
+            <div class="card">
+                <div class="row card-body">
+
+                    <div class="col-sm-6">
+                        <strong class="d-inline-block mb-2 text-primary">
+                            <a href="#">User's Name</a>
+                        </strong>
+                        <h3 class="mb-0">
+                            <a class="text-dark" href="/courses/{{this.slug}}">
+                                {{this.name}}
+                            </a>
+                        </h3>
+                        <div class="mb-1 text-muted">Nov 12</div>
+                        <p class="card-text mb-auto">{{this.description}}</p>
+                        <a href="/courses/{{this.slug}}">Continue reading</a>
+                    </div>
+                    
+                    <img class="col-sm-6" src="img/demo-pic2.jpg" alt="">
+
+                </div>
+            </div>
+        </div>
+    {{/each}}
+    
+</div>
+
+
+
 <div class="mt-4">
     <div class="row">
 
@@ -13,7 +45,6 @@
                         <h5 class="card-title">{{this.name}}</h5>
                     </a>
                     <p class="card-text">{{this.description}}</p>
-                    {{!-- <a href="#" class="btn btn-primary">Mua khoá học</a> --}}
                 </div>
             </div>
         </div>

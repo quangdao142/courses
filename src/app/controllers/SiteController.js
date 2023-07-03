@@ -1,4 +1,5 @@
 const Course = require("../models/Course");
+// const Blog = require("../models/Blog");
 const { multipleMongooseToObject } = require("../../util/mongoose");
 
 class SiteController {
@@ -9,8 +10,6 @@ class SiteController {
 				courses: multipleMongooseToObject(courses),
 			});
 		});
-
-		// res.render('home');
 	}
 
 	search(req, res, next) {
